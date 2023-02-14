@@ -1,2 +1,8 @@
 ---
 # vars file for git-server
+
+shells_path: '/etc/shells'
+git_shell_commands_path: '/home/git/git-shell-commands' 
+ssh_directory_path: '/home/git/.ssh'
+authorized_keys_local: 'files/authorized_keys'
+authorized_keys_remote: '/home/git/.ssh/authorized_keys'

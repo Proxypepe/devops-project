@@ -1,0 +1,7 @@
+---
+- name: Git server
+  hosts: git
+  gather_facts: true
+
+  roles:
+    - git-server

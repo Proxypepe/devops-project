@@ -1,2 +1,62 @@
 ---
 # tasks file for git-server
+
+- name: Install git
+  become: yes
+  become_method: sudo
+  apt: 
+    name: git
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Get git-shell path
+  command: which git-shell
+  register: git_shell_path
+  failed_when: git_shell_path == ""
+
+- name: Ensure git-shell in shells file
+  become: yes
+  become_method: sudo
+  lineinfile:
+    dest: "{{ shells_path }}"
+    line: "{{ git_shell_path.stdout }}"
+    state: present
+  check_mode: no
+  register: out
+  changed_when: no
+  when: git_shell_path.stdout != ""
+
+- name: Create git user
+  become: yes
+  user:
+    name: git
+    state: present
+    shell: "{{ git_shell_path.stdout }}"
+    create_home: yes
+
+- name: Create git-shell-commands
+  become: yes
+  file:
+    path: "{{ git_shell_commands_path }}"
+    state: directory
+    owner: git
+    group: git
+
+- name: Create ssh dir
+  become: yes
+  file:
+    path: "{{ ssh_directory_path }}"
+    state: directory
+    owner: git
+    group: git
+    mode: '700'
+
+- name: Copy authorized_keys
+  become: yes
+  copy:
+    src: "{{ authorized_keys_local }}"
+    dest: "{{ authorized_keys_remote }}"
+    owner: git
+    group: git
+    mode: '600'
