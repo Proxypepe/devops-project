@@ -1,2 +1,20 @@
 ---
 # vars file for docker
+docker_apt_key: https://download.docker.com/linux/ubuntu/gpg
+gpg_key_path: /etc/apt/keyrings/docker.gpg
+docker_repo: "deb [arch=$(dpkg --print-architecture) signed-by={{ gpg_key_path }}] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+docker_list: /etc/apt/sources.list.d/docker.list
+user_name: alex
+
+sub_deps:
+  - ca-certificates
+  - curl 
+  - gnupg 
+  - lsb-release
+
+docker_packeges:
+  - docker-ce
+  - docker-ce-cli 
+  - containerd.io 
+  - docker-buildx-plugin
+  - docker-compose-plugin

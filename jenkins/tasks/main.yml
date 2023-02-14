@@ -1,2 +1,37 @@
 ---
 # tasks file for jenkins
+
+- name: Add jenkins apt key
+  apt_key:
+    url: "{{ jenkins_apt_key }}"
+    state: present
+
+- name: Add jenkins repo
+  apt_repository:
+    repo: "{{ jenkins_repo }}"
+    state: present
+
+- name: Update apt cache 
+  apt:
+    update_cache: yes
+    state: latest
+
+- name: Install java
+  apt:
+    name: "{{ java_version }}"
+    state: present
+
+- name: Install jenkins
+  apt:
+    name: jenkins
+    state: latest
+
+  notify: Start jenkins
+
+- name: Add user to jenkins group
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    groups: jenkins
+    append: yes
+    
+  notify: Reload service

@@ -1,2 +1,13 @@
 ---
 # handlers file for jenkins
+
+- name: Start jenkins
+  service:
+    name: jenkins
+    enabled: true
+    state: started
+
+- name: Reload service
+  service:
+    name: jenkins
+    state: reloaded

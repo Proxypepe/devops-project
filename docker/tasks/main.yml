@@ -1,2 +1,63 @@
 ---
 # tasks file for docker
+
+- name: Install Sub Deps 
+  apt: 
+    name: 
+      "{{ sub_deps }}"
+    update_cache: true
+    cache_valid_time: 3600
+  
+- name: Make directory
+  file:
+    path: '/etc/apt/keyrings'
+    state: directory
+    recurse: yes
+    mode: 0755
+
+# - name: Add Docker GPG key
+#   ansible.builtin.get_url:
+#     url: https://download.docker.com/linux/ubuntu/gpg
+#     dest: /etc/apt/keyrings/docker.gpg
+#     mode: 0755
+
+# - name: Add Docker repo
+#   ansible.builtin.apt_repository:
+#     repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+#     filename: "/etc/apt/sources.list.d/docker.list"
+#     state: present
+
+
+- name: Add Docker GPG key
+  shell: 
+    cmd: curl -fsSL "{{ docker_apt_key }}" | sudo gpg --dearmor -o "{{ gpg_key_path }}"
+    warn: false
+
+- name: Add Docker repo
+  shell: >
+    echo "{{ docker_repo }}" | sudo tee "{{ docker_list }}" > /dev/null
+
+- name: Update apt cache 
+  apt:
+    update_cache: yes
+    state: latest
+
+- name: Install Docker
+  apt: 
+    name: 
+      "{{ docker_packeges }}"
+    update_cache: true
+    cache_valid_time: 3600
+    
+- name: Ensure group docker exists
+  group:
+    name: docker
+    state: present
+
+- name: Add user to docker group
+  user:
+    name: "{{ user_name }}"
+    groups: docker
+    append: yes
+    
+  notify: Reload service
