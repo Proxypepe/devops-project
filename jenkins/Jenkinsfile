@@ -1,0 +1,18 @@
+pipeline {
+    agent none
+    stages {
+        stage("Test configurations") {
+            agent slave
+            steps {
+                ansible-lint ansible/
+            }
+        }
+
+        stage("Working with code") {
+            agent slave
+            steps {
+                flake8 src/
+            }            
+        }
+    }
+}
