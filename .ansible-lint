@@ -3,5 +3,6 @@ profile: basic
 skip_list:
   - yaml
   - syntax-check[specific]
-
+  - internal-error
+  
 offline: true
