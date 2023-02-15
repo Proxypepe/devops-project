@@ -4,14 +4,14 @@ pipeline {
         stage("Test configurations") {
             agent slave
             steps {
-                ansible-lint ansible/
+                sh 'ansible-lint ansible/'
             }
         }
 
         stage("Working with code") {
             agent slave
             steps {
-                flake8 src/
+                sh 'flake8 src/'
             }            
         }
     }
