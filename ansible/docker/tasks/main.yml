@@ -2,17 +2,17 @@
 # tasks file for docker
 
 - name: Install Sub Deps 
-  apt: 
+  ansible.builtin.apt: 
     name: 
       "{{ sub_deps }}"
     update_cache: true
     cache_valid_time: 3600
   
 - name: Make directory
-  file:
+  ansible.builtin.file:
     path: '/etc/apt/keyrings'
     state: directory
-    recurse: yes
+    recurse: true
     mode: 0755
 
 # - name: Add Docker GPG key
@@ -34,16 +34,16 @@
     warn: false
 
 - name: Add Docker repo
-  shell: >
-    echo "{{ docker_repo }}" | sudo tee "{{ docker_list }}" > /dev/null
+  shell:
+    cmd: echo "{{ docker_repo }}" | sudo tee "{{ docker_list }}" > /dev/null
 
 - name: Update apt cache 
-  apt:
-    update_cache: yes
+  ansible.builtin.apt:
+    update_cache: true
     state: latest
 
 - name: Install Docker
-  apt: 
+  ansible.builtin.apt: 
     name: 
       "{{ docker_packeges }}"
     update_cache: true
