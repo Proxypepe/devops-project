@@ -1,0 +1,7 @@
+profile: basic
+
+skip_list:
+  - yaml
+  - syntax-check[specific]
+
+offline: true
