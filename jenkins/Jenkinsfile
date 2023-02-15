@@ -2,14 +2,14 @@ pipeline {
     agent none
     stages {
         stage("Test configurations") {
-            agent { slave }
+            agent { label 'slave' }
             steps {
                 sh 'ansible-lint ansible/'
             }
         }
 
         stage("Working with code") {
-            agent { slave }
+            agent { label 'slave' }
             steps {
                 sh 'flake8 src/'
             }            
