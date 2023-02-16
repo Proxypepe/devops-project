@@ -17,3 +17,6 @@ data:
       - job_name: 'Flask'
         static_configs:
           - targets: ["flask-app-service:5000"]
+      - job_name: 'Loki'
+        static_configs:
+          - targets: ["loki-service:3100"]
