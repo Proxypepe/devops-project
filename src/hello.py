@@ -45,7 +45,7 @@ metrics = PrometheusMetrics(server)
 def listBlog():
     global conn
     if not conn:
-        conn = DBManager(password_file='/etc/db-password')
+        conn = DBManager(password_file='/etc/secrets/db-password')
         conn.populate_db()
     rec = conn.query_titles()
 
