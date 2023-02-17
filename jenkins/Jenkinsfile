@@ -2,7 +2,7 @@ pipeline {
     agent none
 
     environment {
-        REGESTRY_URL = "192.168.0.111:5000"
+        REGESTRY_URL = "dockerregistry.local:5000"
         DOCKER_IMAGE_NAME = "flask-app-devops"
         TAG = "monitoring"
     }
