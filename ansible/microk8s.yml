@@ -1,0 +1,17 @@
+---
+- name: Install Microk8s
+  hosts: kube
+  become: true
+
+  roles:
+      - role: microk8s
+        vars:
+          microk8s_plugins:
+            dns: true
+            ingress: true
+            rbac: true
+            metrics-server: true
+            helm3: true
+            ha-cluster: true
+        users:
+          - alex

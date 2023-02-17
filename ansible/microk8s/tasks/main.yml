@@ -1,2 +1,10 @@
 ---
 # tasks file for microk8s
+- name: Install
+  include_tasks: install.yml
+
+- name: Configure users
+  include_tasks: configure-groups.yml
+
+- name: Configure single node addons
+  include_tasks: addons.yml
