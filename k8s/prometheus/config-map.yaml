@@ -9,7 +9,18 @@ data:
     global:
       scrape_interval: 5s
       evaluation_interval: 5s
-    
+
+    rule_files:
+      - 'alert.rules'
+
+    alerting:
+      alertmanagers:
+      - scheme: http
+        static_configs:
+        - targets:
+          - "alertmanager:9093"
+
+
     scrape_configs:
       - job_name: 'Prometheus'
         static_configs:
@@ -24,4 +35,15 @@ data:
         static_configs:
           - targets: ["node-exporter:9100"]
 
-      
+  alert.rules: |-
+    groups: 
+      - name: test
+        rules:
+        - alert: PrometheusTargetMissing
+          expr: up == 0
+          for: 0m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Prometheus target missing (instance {{ $labels.instance }})"
+            description: "A Prometheus target has disappeared. An exporter might be crashed. VALUE = {{ $value }}  LABELS: {{ $labels }}"
