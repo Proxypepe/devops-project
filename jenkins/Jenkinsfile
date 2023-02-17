@@ -23,7 +23,7 @@ pipeline {
         }
 
         stage("Docker") {
-            agent any
+            agent { label 'master' }
             steps {
                 sh "docker build -t ${REGESTRY_URL}/${DOCKER_IMAGE_NAME}:${TAG} src/"
                 sh "docker push ${REGESTRY_URL}/${DOCKER_IMAGE_NAME}:${TAG}"
