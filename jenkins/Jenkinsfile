@@ -26,8 +26,6 @@ pipeline {
             agent any
             steps {
                 sh "docker build -t ${REGESTRY_URL}/${DOCKER_IMAGE_NAME}:${TAG} src/"
-            }  
-            steps {
                 sh "docker push ${REGESTRY_URL}/${DOCKER_IMAGE_NAME}:${TAG}"
             }
         }
