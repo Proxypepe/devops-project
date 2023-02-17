@@ -1,5 +1,12 @@
 pipeline {
     agent none
+
+    environment {
+        REGESTRY_URL = "192.168.0.111:5000"
+        DOCKER_IMAGE_NAME = "flask-app-devops"
+        TAG = "monitoring"
+    }
+
     stages {
         stage("Test configurations") {
             agent { label 'slave' }
@@ -12,7 +19,17 @@ pipeline {
             agent { label 'slave' }
             steps {
                 sh 'flake8 src/'
-            }            
+            }     
+        }
+
+        stage("Docker") {
+            agent any
+            steps {
+                sh "docker build -t ${DOCKER_IMAGE_NAME}:${TAG} src/"
+            }  
+            steps {
+                sh "docker push ${REGESTRY_URL}/${DOCKER_IMAGE_NAME}:${TAG}"
+            }
         }
     }
 }

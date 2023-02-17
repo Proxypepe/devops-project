@@ -1,3 +1,5 @@
+import uuid
+
 from flask import Flask
 import mysql.connector
 from prometheus_flask_exporter import PrometheusMetrics
@@ -39,17 +41,18 @@ class DBManager:
 server = Flask(__name__)
 conn = None
 metrics = PrometheusMetrics(server)
+instance_uuid = uuid.uuid4()
 
 
 @server.route('/')
 def listBlog():
-    global conn
+    global conn, instance_uuid
     if not conn:
         conn = DBManager(password_file='/etc/secrets/db-password')
         conn.populate_db()
     rec = conn.query_titles()
 
-    response = ''
+    response = f'Instance UUID: {instance_uuid}\n'
     for c in rec:
         response = response + '<div>   Hello  ' + c + '</div>'
     return response
