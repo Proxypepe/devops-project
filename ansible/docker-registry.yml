@@ -1,0 +1,14 @@
+- name: Deploy local docker registry
+  hosts: git
+  become: true
+  become_user: alex
+  become_method: su
+
+  tasks:
+    - name: Start registry
+      community.docker.docker_container:
+        name: registry
+        image: registry:2
+        restart: true
+        ports:
+          - "5000:5000"
