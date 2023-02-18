@@ -1,1 +1,3 @@
 authorized_keys
+/k8s/prometheus/alertmanager/config-map.yaml
+.idea
