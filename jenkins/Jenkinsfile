@@ -1,9 +1,6 @@
 pipeline {
     agent none
 
-    def app
-    env.WORKSPACE = pwd()
-    def version = readFile "${env.WORKSPACE}/.build-version"
 
     environment {   
         REGESTRY_URL = "dockerregistry.local:5000"
@@ -29,7 +26,7 @@ pipeline {
         stage('Build image') {
             agent { label 'master' }
             steps {
-                app = docker.build("${DOCKER_IMAGE_NAME}:${TAG}")
+                def app = docker.build("${DOCKER_IMAGE_NAME}:${TAG}")
             }
         }
  
@@ -49,7 +46,12 @@ pipeline {
             //         app.push("${version}")
             //     }
             // }
-            sh 'echo "${version}"'
+            steps {
+                env.WORKSPACE = pwd()
+                def version = readFile "${env.WORKSPACE}/.build-version"
+                sh 'echo "${version}"'
+            }
+            
         }
     }
 }
