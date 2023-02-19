@@ -45,5 +45,24 @@ pipeline {
                 }
             }
         }
+
+        stage('Update flask chart version') {
+            agent { label 'master' } {
+                script {
+                    def version = readFile(file: '.build-version')
+                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                        withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                            sh "git config user.email sasha_golovin_95@bk.ru"
+                            sh "git config user.name Proxypepe"
+
+                            sh "sed -i 's/monitoring.*/monitoring-${version}/' helm/flask/values.yaml"
+
+                            sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/final-project.git HEAD:main"
+
+                        }
+                    }
+                }
+            }
+        }
     }
 }
