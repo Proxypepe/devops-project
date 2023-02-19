@@ -28,7 +28,7 @@ pipeline {
         stage('Build image') {
             agent { label 'master' }
             steps {
-                def app = docker.build("${DOCKER_IMAGE_NAME}:${TAG}")
+                app = docker.build("${DOCKER_IMAGE_NAME}:${TAG}")
             }
         }
  
