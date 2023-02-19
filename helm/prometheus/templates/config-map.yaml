@@ -35,9 +35,6 @@ data:
       - job_name: 'Node exporter'
         static_configs:
           - targets: ["node-exporter:9100"]
-      - job_name: 'Promtail'
-        static_configs:
-          - targets: ["promtail-service:9080"]
 
 
       # - job_name: 'kubernetes-kubelet'
