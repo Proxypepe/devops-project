@@ -6,7 +6,7 @@ replicaCount: 2
 
 image:
   imagePullPolicy: Always
-  repository: justhynd/flask-app-devops
+  repository: dockerregistry.local:5000/flask-app-devops
   tag: monitoring 
   containerPort: 5000
 
