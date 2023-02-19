@@ -35,10 +35,8 @@ pipeline {
             agent { label 'master' }
             steps {
                 script {
-                    def workspace = pwd()
-                    def version = readFile "${workspace}/.build-version"
-                    sh 'echo path: ${workspace}'
-                    sh 'echo "version: ${version}"'
+                    def data = readFile(file: '.build-version')
+                    println(data)
                 }
             }
         }
