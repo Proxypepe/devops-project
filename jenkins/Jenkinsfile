@@ -1,6 +1,7 @@
+def app
+
 pipeline {
     agent none
-
 
     environment {   
         REGESTRY_URL = "dockerregistry.local:5000"
@@ -9,7 +10,7 @@ pipeline {
     }
 
     stages {
-        def app
+        
 
         stage("Test configurations") {
             agent { label 'slave' }
