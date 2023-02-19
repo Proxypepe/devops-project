@@ -27,7 +27,11 @@ pipeline {
         stage('Build image') {
             agent { label 'master' }
             steps {
-                sh "docker build -t ${REGESTRY_URL}/${DOCKER_IMAGE_NAME}:${TAG} src/"
+                script {
+                    def version = readFile(file: '.build-version')
+                    println(version)
+                    sh "docker build -t ${REGESTRY_URL}/${DOCKER_IMAGE_NAME}:${TAG}-${version} src/"
+                }
             }
         }
  
@@ -35,8 +39,9 @@ pipeline {
             agent { label 'master' }
             steps {
                 script {
-                    def data = readFile(file: '.build-version')
-                    println(data)
+                    def version = readFile(file: '.build-version')
+                    println(version)
+                    sh "docker push ${REGESTRY_URL}/${DOCKER_IMAGE_NAME}:${TAG}-${version}"
                 }
             }
         }
