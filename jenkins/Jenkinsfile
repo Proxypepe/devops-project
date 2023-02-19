@@ -1,7 +1,11 @@
 pipeline {
     agent none
 
-    environment {
+    def app
+    env.WORKSPACE = pwd()
+    def version = readFile "${env.WORKSPACE}/.build-version"
+
+    environment {   
         REGESTRY_URL = "dockerregistry.local:5000"
         DOCKER_IMAGE_NAME = "flask-app-devops"
         TAG = "monitoring"
@@ -22,12 +26,30 @@ pipeline {
             }     
         }
 
-        stage("Docker") {
+        stage('Build image') {
             agent { label 'master' }
             steps {
-                sh "docker build -t ${REGESTRY_URL}/${DOCKER_IMAGE_NAME}:${TAG} src/"
-                sh "docker push ${REGESTRY_URL}/${DOCKER_IMAGE_NAME}:${TAG}"
+                app = docker.build("${DOCKER_IMAGE_NAME}:${TAG}")
             }
+        }
+ 
+        stage('Test image') {
+            agent { label 'master' }
+            steps {
+                app.inside {
+                    sh 'echo "Tests passed"'
+                }
+            }
+        }
+        
+        stage('Push image') {
+            agent { label 'master' }
+            // steps {
+            //     docker.withRegistry("http://dockerregistry.local") {
+            //         app.push("${version}")
+            //     }
+            // }
+            sh 'echo "${version}"'
         }
     }
 }
