@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.selector }}
+  template:
+    metadata:
+      name: alertmanager
+      labels:
+        app: {{ .Values.deployment.selector }}
+    spec:
+      containers:
+      - name: {{ .Values.deployment.container_name }}
+        image: {{ .Values.deployment.repository }}:{{ .Values.deployment.tag }}
+        args:
+          - '--config.file=/etc/alertmanager/config.yml'
+          - '--storage.path=/alertmanager'
+        ports:
+        - name: alertmanager
+          containerPort: {{ .Values.deployment.containerPort }}
+
+        resources:
+          limits:
+            memory: 256Mi
+            cpu: "1"
+          requests:
+            memory: 128Mi
+            cpu: "0.2"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/alertmanager
+
+        - name: alertmanager
+          mountPath: /alertmanager
+      volumes:
+      - name: config-volume
+        configMap:
+          name: alertmanager
+      - name: alertmanager
+        emptyDir: {}

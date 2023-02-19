@@ -1,0 +1,27 @@
+# Default values for alertmanager.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: default
+
+replicaCount: 1
+
+
+deployment:
+  container_name: alertmanager
+  repository: prom/alertmanager
+  tag: latest
+  selector: alertmanager
+  containerPort: 9093
+
+service:
+  type: NodePort
+  ports:
+    name: alertmanager
+    protocol: TCP
+    port: 9093
+    targetPort: 9093
+
+config:
+  bot_token: ''
+  chat_id: -1
