@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-deployment
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.deployment.selector }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.selector }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.selector }}
+    spec:
+      securityContext:
+          runAsUser: 0
+      containers:
+        - name: grafana-deployment
+          image: {{ .Values.image.repository }} 
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: {{ .Values.port }}
+          env:
+            - name: GF_AUTH_BASIC_ENABLED
+              value: "false"
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: "true"
+            - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+              value: Admin
+          volumeMounts:
+            - name: grafana-volume 
+              mountPath: /var/lib/grafana
+            - name: grafana-conf-volume
+              mountPath: /etc/grafana/provisioning/datasources/             
+      volumes:
+        - name: grafana-volume
+          persistentVolumeClaim:
+            claimName: grafana-pvc
+        - name: grafana-conf-volume
+          configMap:
+            defaultMode: 0660
+            name: grafana-conf
