@@ -1,5 +1,3 @@
-def app
-
 pipeline {
     agent none
 
@@ -29,26 +27,12 @@ pipeline {
         stage('Build image') {
             agent { label 'master' }
             steps {
-                app = docker.build("${DOCKER_IMAGE_NAME}:${TAG}")
+                sh "docker build -t ${REGESTRY_URL}/${DOCKER_IMAGE_NAME}:${TAG} src/"
             }
         }
  
-        stage('Test image') {
-            agent { label 'master' }
-            steps {
-                app.inside {
-                    sh 'echo "Tests passed"'
-                }
-            }
-        }
-        
         stage('Push image') {
             agent { label 'master' }
-            // steps {
-            //     docker.withRegistry("http://dockerregistry.local") {
-            //         app.push("${version}")
-            //     }
-            // }
             steps {
                 script {
                     def workspace = pwd()
