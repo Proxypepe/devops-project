@@ -57,8 +57,9 @@ pipeline {
                             sh "git config user.name Proxypepe"
 
                             sh "sed -i 's/monitoring.*/monitoring-${version}/' helm/flask/values.yaml"
-
-                            sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/final-project.git HEAD:main"
+		 	    sh "git add ."
+                            sh "git commit -m 'Done by Jenkins Job, build verion: ${verion}'"
+			    sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/final-project.git HEAD:main"
 
                         }
                     }
