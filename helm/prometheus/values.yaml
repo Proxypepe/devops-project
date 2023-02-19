@@ -4,6 +4,8 @@
 
 replicaCount: 1
 
+namespace: default
+
 deployment:
   replicas: 1
   image:
@@ -19,3 +21,6 @@ service:
   port: 9090
   targetPort: 9090
   nodePort: 30000
+
+service_accaunt:
+  name: prometheus-role
