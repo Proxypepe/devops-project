@@ -9,6 +9,8 @@ pipeline {
     }
 
     stages {
+        def app
+
         stage("Test configurations") {
             agent { label 'slave' }
             steps {
@@ -47,8 +49,10 @@ pipeline {
             //     }
             // }
             steps {
-                env.WORKSPACE = pwd()
-                def version = readFile "${env.WORKSPACE}/.build-version"
+                script {
+                    def workspace = pwd()
+                    def version = readFile "${workspace}/.build-version"
+                }
                 sh 'echo "${version}"'
             }
             
