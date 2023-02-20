@@ -54,10 +54,9 @@ pipeline {
                     def version = readFile(file: '.build-version')
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                         withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                            sh "git config user.email sasha_golovin_95@bk.ru"
-                            sh "git config user.name Proxypepe"
-                            
                             dir("final-project-helm") {
+                                sh "git config user.email sasha_golovin_95@bk.ru"
+                                sh "git config user.name Proxypepe"
                                 sh "ls; pwd"
                                 sh "sed -i 's/monitoring.*/monitoring-${version}/' flask/values.yaml"
                                 sh "git add ."
