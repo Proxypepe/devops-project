@@ -58,7 +58,7 @@ pipeline {
                             sh "pwd"
                             sh "ls"
                             sh "cd final-project-helm"
-                            sh "ls"
+                            sh "ls; pwd"
                             sh "sed -i 's/monitoring.*/monitoring-${version}/' flask/values.yaml"
                             sh "git add ."
                             sh "git commit -m 'Done by Jenkins Job, build verion: ${version}'"
