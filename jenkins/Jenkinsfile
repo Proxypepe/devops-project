@@ -50,21 +50,20 @@ pipeline {
             agent { label 'master' }
             steps {
                 sh "pwd"
-                sh "ls"
-                sh "cd final-project-helm"
                 script {
                     def version = readFile(file: '.build-version')
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                         withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                             sh "git config user.email sasha_golovin_95@bk.ru"
                             sh "git config user.name Proxypepe"
-
-                            sh "ls; pwd"
-                            sh "sed -i 's/monitoring.*/monitoring-${version}/' flask/values.yaml"
-                            sh "git add ."
-                            sh "git commit -m 'Done by Jenkins Job, build verion: ${version}'"
-			                sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/final-project-helm.git HEAD:main"
-
+                            
+                            dir("final-project-helm") {
+                                sh "ls; pwd"
+                                sh "sed -i 's/monitoring.*/monitoring-${version}/' flask/values.yaml"
+                                sh "git add ."
+                                sh "git commit -m 'Done by Jenkins Job, build verion: ${version}'"
+                                sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/final-project-helm.git HEAD:main"
+                            }
                         }
                     }
                 }
