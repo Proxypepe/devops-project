@@ -57,11 +57,12 @@ pipeline {
                             dir("final-project-helm") {
                                 sh "git config user.email sasha_golovin_95@bk.ru"
                                 sh "git config user.name Proxypepe"
+                                sh "git pull origin HEAD:main"
                                 sh "ls; pwd"
                                 sh "sed -i 's/monitoring.*/monitoring-${version}/' flask/values.yaml"
                                 sh "git add ."
                                 sh "git commit -m 'Done by Jenkins Job, build verion: ${version}'"
-                                sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/final-project-helm.git HEAD:main"
+                                sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/final-project-helm.git HEAD:main --force"
                             }
                         }
                     }
