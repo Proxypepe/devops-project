@@ -54,7 +54,7 @@ def listBlog():
 
     response = f'Instance UUID: {instance_uuid}\n'
     for c in rec:
-        response = response + '<div>   Hello  ' + c + '</div>'
+        response = response + '<div>   Hello wd  ' + c + '</div>'
     return response
 
 
