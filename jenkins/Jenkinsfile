@@ -55,7 +55,8 @@ pipeline {
                         withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                             sh "git config user.email sasha_golovin_95@bk.ru"
                             sh "git config user.name Proxypepe"
-                            
+                            sh "pwd"
+                            sh "ls"
                             sh "cd final-project-helm"
                             sh "sed -i 's/monitoring.*/monitoring-${version}/' flask/values.yaml"
                             sh "git add ."
